@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Button from './Button';
+import Classes from './Classes';
 
 import './App.css';
 
@@ -32,6 +34,11 @@ class App extends Component {
 
   render() {
     const {title,subtitle,options} = this.state
+    const newNumbers = options.map((nums)=>{
+        return(
+          <li key={nums}>Number: {nums}  </li>
+        )
+    })
     return (
       <div className="App">
           <h1>{title}</h1>
@@ -39,14 +46,17 @@ class App extends Component {
           <p>{options.length > 0 ? "here are your options" : " no options"}</p>
           <p>{options.length}</p>
           <ol>
-            <li>item one</li>
-            <li>item two</li>
+            {newNumbers}
           </ol>
           <form onSubmit={this.handleSubmit}>
             <input type="text" name="option" />
             <button>Add Option</button>
             <button onClick={this.handleClick}>Remove All</button>
           </form>
+
+          <Button/>
+
+          <Classes/>
       </div>
     );
   }
