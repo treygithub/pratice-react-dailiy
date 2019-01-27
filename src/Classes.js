@@ -19,6 +19,8 @@ export default class Classes extends Component {
         }
       }
 
+
+
       const me = new Person('Robert Hunn',37,'AA degree');
       console.log(me);
 
@@ -36,12 +38,4 @@ export default class Classes extends Component {
       </div>
     )
   }
-}
-
-
-class Student extends Person{
-    constructor(name,age,major="undecided"){
-        super(name,age)
-        this.major=major
-    }
 }

@@ -1,62 +1,66 @@
 import React, { Component } from 'react';
-import Button from './Button';
-import Classes from './Classes';
 
 import './App.css';
 
 class App extends Component {
      state = {
-    title: 'title of app',
-    subtitle:'im a subtitle',
-    options:[]
+      text:[],
+      count:0,
+      textField2:""
   }
 
-  handleSubmit = (e) =>{
+  handleDeleteOne=()=>{
+    this.setState((state)=>{return{count:state.count -= 1}})
+  }
+  handleAddOne=()=>{
+    this.setState((state)=>{return{count:state.count += 1}})
+  }
+  handleReset=()=>{
+    this.setState((state)=>{return{count:state.count = 0}})
+  }
+  handleRemoveOne=(e)=>{
+    this.setState({[e.target.name]: e.target.value})
+  }
+  filterOne = (e) =>{
+    e.preventDefault()
+    this.setState((state)=>({  text: state.text.filter((text)=>{return this.state.textField2 !== text} )}))
+  }
+
+  handleOption=(e)=>{
     e.preventDefault();
-    const option = e.target.elements.option.value;
-    if(option){
-      this.state.options.push(option);
-      e.target.elements.option.value = ""
-      this.setState((state) => {
-        return {options: state.options};
-      });
+    let userValue = e.target.elements.textField.value.trim();
+    if(userValue){
+      let newText = [...this.state.text]
+      newText.push(userValue)
+      this.setState((state)=>({text:state.text = newText}))
     }
-    console.log(this.state.options)
-  }
-
-  handleClick = () => {
-
-      this.setState((state)=>{
-        return {options: state.options = []}
-      })
-      console.log('reset state',this.state.options)
   }
 
   render() {
-    const {title,subtitle,options} = this.state
-    const newNumbers = options.map((nums)=>{
-        return(
-          <li key={nums}>Number: {nums}  </li>
-        )
+    let {count,text} = this.state
+
+    let textMap= text.map((e)=>{
+      return <li key={e}>{e}</li>
     })
     return (
       <div className="App">
-          <h1>{title}</h1>
-          {subtitle && <p>{subtitle}</p>}
-          <p>{options.length > 0 ? "here are your options" : " no options"}</p>
-          <p>{options.length}</p>
+        <h1>Count: {count}</h1>
+        <button onClick={(e)=>{this.handleAddOne()}}> + </button>
+        <button onClick={(e)=>{this.handleDeleteOne()}}> - </button>
+        <button onClick={(e)=>{this.handleReset()}}>reset</button>
           <ol>
-            {newNumbers}
+            {textMap}
           </ol>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" name="option" />
-            <button>Add Option</button>
-            <button onClick={this.handleClick}>Remove All</button>
-          </form>
+            <form onSubmit={this.filterOne}>
+            <h6>enter number to delete</h6>
+            <input onChange={ e => this.handleRemoveOne(e) } type="text" name="textField2"/>
+            <button>submit</button>
+            </form>
 
-          <Button/>
-
-          <Classes/>
+        <form onSubmit={this.handleOption}>
+          <input type="text" name="textField"></input>
+          <button>SUBMIT</button>
+        </form>
       </div>
     );
   }
