@@ -21,14 +21,21 @@ class App extends Component {
   handleRemoveOne=(e)=>{
     this.setState({[e.target.name]: e.target.value})
   }
+
   filterOne = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
+    let userVal = e.target.elements.textField2.value.trim()
+    {this.state.text.includes(userVal) ? e.target.elements.textField2.value = "" : e.target.elements.textField2.value = "Item Not Found"}
+    if(userVal){
     this.setState((state)=>({  text: state.text.filter((text)=>{return this.state.textField2 !== text} )}))
+    
+    }
   }
 
   handleOption=(e)=>{
     e.preventDefault();
     let userValue = e.target.elements.textField.value.trim();
+    e.target.elements.textField.value = ""
     if(userValue){
       let newText = [...this.state.text]
       newText.push(userValue)
