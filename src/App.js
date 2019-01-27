@@ -52,11 +52,11 @@ class App extends Component {
             {textMap}
           </ol>
             <form onSubmit={this.filterOne}>
-            <h6>enter number to delete</h6>
+            <h3>enter the value to delete</h3>
             <input onChange={ e => this.handleRemoveOne(e) } type="text" name="textField2"/>
             <button>submit</button>
             </form>
-
+          <h3>Add new value</h3>
         <form onSubmit={this.handleOption}>
           <input type="text" name="textField"></input>
           <button>SUBMIT</button>
