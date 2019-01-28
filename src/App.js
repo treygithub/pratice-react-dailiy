@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Toggle from './Toggle'
 import './App.css';
-
+import axios from 'axios'
 class App extends Component {
   constructor(props){
     super(props);
@@ -9,10 +9,16 @@ class App extends Component {
       text:[],
       count:0,
       textField2:"",
-      toggle:false
+      toggle:false,
+      persons:[]
   }
 }
   componentDidMount(){
+    axios.get('https://jsonplaceholder.typicode.com/users')
+    .then(res=>{
+      console.log('res', res)
+      this.setState({persons:res.data})
+    })
     console.log('fethcing data')
     try{
       const json = localStorage.getItem('text');
@@ -81,7 +87,9 @@ class App extends Component {
     let textMap= text.map((e)=>{
       return <li key={e}>{e}</li>
     })
-    
+    let httpAxios = this.state.persons.map((e)=>{
+      return <li key={e.id}>{e.name}</li>
+    })
     return (
       <div className="App">
         <h1>Count: {count}</h1>
@@ -102,6 +110,8 @@ class App extends Component {
           <button>SUBMIT</button>
         </form>
         <Toggle />
+        <h3>Axios get request</h3>
+        <div style={{marginTop:"35px"}}>{httpAxios}</div>
       </div>
     );
   }
