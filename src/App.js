@@ -53,7 +53,9 @@ class App extends Component {
     e.preventDefault();
     let userVal = e.target.elements.textField2.value.trim()
     if(userVal){
-      this.setState((state)=>({  text: state.text.filter((text)=>{return this.state.textField2 !== text} )}))
+      let hoe = []
+      hoe = this.state.text.filter((text)=>{return this.state.textField2 !== text} )
+      this.setState((state)=>({  text: state.text=[...hoe] }))
       }
     if(this.state.text.includes(userVal)) {
       return e.target.elements.textField2.value = ""
