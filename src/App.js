@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props){
     super(props);
      this.state = {
-      text:props.text,
+      text:[],
       count:0,
       textField2:"",
       toggle:false
@@ -21,7 +21,7 @@ class App extends Component {
       this.setState(()=>({text}))
       }
     } catch (e){
-        console.log('e', e)
+        //do nothing
     }
   }
 
@@ -83,9 +83,9 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Count: {count}</h1>
-        <button onClick={(e)=>{this.handleAddOne()}}> + </button>
-        <button onClick={(e)=>{this.handleDeleteOne()}}> - </button>
-        <button onClick={(e)=>{this.handleReset()}}>reset</button>
+        <button onClick={()=>{this.handleAddOne()}}> + </button>
+        <button onClick={()=>{this.handleDeleteOne()}}> - </button>
+        <button onClick={()=>{this.handleReset()}}>reset</button>
           <ol>
             {textMap}
           </ol>
@@ -103,9 +103,6 @@ class App extends Component {
       </div>
     );
   }
-}
-App.defaultProps = {
-  text:[]
 }
 
 export default App;
