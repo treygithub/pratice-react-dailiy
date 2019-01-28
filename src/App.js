@@ -1,12 +1,39 @@
 import React, { Component } from 'react';
-
+import Toggle from './Toggle'
 import './App.css';
 
 class App extends Component {
-     state = {
-      text:[],
+  constructor(props){
+    super(props);
+     this.state = {
+      text:props.text,
       count:0,
-      textField2:""
+      textField2:"",
+      toggle:false
+  }
+}
+  componentDidMount(){
+    console.log('fethcing data')
+    try{
+      const json = localStorage.getItem('text');
+      const text = JSON.parse(json);
+      if(text){
+      this.setState(()=>({text}))
+      }
+    } catch (e){
+        console.log('e', e)
+    }
+  }
+
+  componentDidUpdate(prevProps,prevState){
+    console.log("change")
+    if(prevState.text.length !== this.state.text.length){
+      const json = JSON.stringify(this.state.text);
+      localStorage.setItem('text',json);
+    }
+  }
+  componentWillUnmount(){
+    console.log('object unmounted')
   }
 
   handleDeleteOne=()=>{
@@ -25,11 +52,14 @@ class App extends Component {
   filterOne = (e) =>{
     e.preventDefault();
     let userVal = e.target.elements.textField2.value.trim()
-    {this.state.text.includes(userVal) ? e.target.elements.textField2.value = "" : e.target.elements.textField2.value = "Item Not Found"}
     if(userVal){
-    this.setState((state)=>({  text: state.text.filter((text)=>{return this.state.textField2 !== text} )}))
-    
-    }
+      this.setState((state)=>({  text: state.text.filter((text)=>{return this.state.textField2 !== text} )}))
+      }
+    if(this.state.text.includes(userVal)) {
+      return e.target.elements.textField2.value = ""
+    }else {
+        return e.target.elements.textField2.value = "Item Not Found";
+  }
   }
 
   handleOption=(e)=>{
@@ -39,16 +69,17 @@ class App extends Component {
     if(userValue){
       let newText = [...this.state.text]
       newText.push(userValue)
-      this.setState((state)=>({text:state.text = newText}))
+      this.setState((state)=>({text:state.text = [...newText]}))
     }
   }
 
   render() {
+    console.log(this.state.text)
     let {count,text} = this.state
-
     let textMap= text.map((e)=>{
       return <li key={e}>{e}</li>
     })
+    
     return (
       <div className="App">
         <h1>Count: {count}</h1>
@@ -68,9 +99,13 @@ class App extends Component {
           <input type="text" name="textField"></input>
           <button>SUBMIT</button>
         </form>
+        <Toggle />
       </div>
     );
   }
+}
+App.defaultProps = {
+  text:[]
 }
 
 export default App;
