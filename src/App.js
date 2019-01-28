@@ -19,7 +19,14 @@ class App extends Component {
       console.log('res', res)
       this.setState({persons:res.data})
     })
-    console.log('fethcing data')
+    .catch((err)=>{return console.log(err)})
+
+      const getCount = localStorage.getItem('count');
+      const count1 = parseInt(getCount,10);
+      if(!isNaN(count1)){
+      this.setState(()=>({count:count1}))
+      }
+
     try{
       const json = localStorage.getItem('text');
       const text = JSON.parse(json);
@@ -32,7 +39,10 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps,prevState){
-    console.log("change")
+    if(prevState.count !== this.state.count){
+      localStorage.setItem('count',this.state.count);
+    }
+
     if(prevState.text.length !== this.state.text.length){
       const json = JSON.stringify(this.state.text);
       localStorage.setItem('text',json);
@@ -43,13 +53,13 @@ class App extends Component {
   }
 
   handleDeleteOne=()=>{
-    this.setState((state)=>{return{count:state.count -= 1}})
+    this.setState((state)=>{return{count:state.count - 1}})
   }
   handleAddOne=()=>{
-    this.setState((state)=>{return{count:state.count += 1}})
+    this.setState((state)=>{return{count:state.count + 1}})
   }
   handleReset=()=>{
-    this.setState((state)=>{return{count:state.count = 0}})
+    this.setState(()=>{return{count:0}})
   }
   handleRemoveOne=(e)=>{
     this.setState({[e.target.name]: e.target.value})
@@ -59,9 +69,9 @@ class App extends Component {
     e.preventDefault();
     let userVal = e.target.elements.textField2.value.trim()
     if(userVal){
-      let hoe = []
-      hoe = this.state.text.filter((text)=>{return this.state.textField2 !== text} )
-      this.setState((state)=>({  text: state.text=[...hoe] }))
+      let ho = []
+      ho = this.state.text.filter((text)=>{return this.state.textField2 !== text} )
+      this.setState((state)=>({  text: ho }))
       }
     if(this.state.text.includes(userVal)) {
       return e.target.elements.textField2.value = ""
@@ -77,12 +87,12 @@ class App extends Component {
     if(userValue){
       let newText = [...this.state.text]
       newText.push(userValue)
-      this.setState((state)=>({text:state.text = [...newText]}))
+      this.setState((state)=>({text: newText}))
     }
   }
 
   render() {
-    console.log(this.state.text)
+    console.log(this.state.count)
     let {count,text} = this.state
     let textMap= text.map((e)=>{
       return <li key={e}>{e}</li>
