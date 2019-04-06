@@ -14,7 +14,7 @@ export default class Classes extends Component {
             return `Hello ${this.name} !`
         }
 
-        getDescription(){
+        getDescription = () => {
             return ` ${this.name} is ${this.age} Years old`
         }
       }
